@@ -10,7 +10,7 @@ public class DialogPluginSettings {
     private static int dialogHeight;
 
     public static int getDialogWidth() {
-        return (dialogWidth > 0) ? dialogWidth : 1000;
+        return (dialogWidth > 0) ? dialogWidth : 800;
     }
 
     public static void setDialogWidth(int dialogWidth) {

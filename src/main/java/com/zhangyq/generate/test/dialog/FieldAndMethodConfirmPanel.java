@@ -1,23 +1,31 @@
 package com.zhangyq.generate.test.dialog;
 
+import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.ide.util.DefaultPsiElementCellRenderer;
-import com.intellij.ide.util.gotoByName.ChooseByNamePanel;
+import com.intellij.java.JavaBundle;
+import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.ui.LabeledComponent;
+import com.intellij.openapi.ui.Messages;
 import com.intellij.psi.*;
+import com.intellij.psi.util.PsiUtil;
+import com.intellij.refactoring.ui.MemberSelectionTable;
+import com.intellij.refactoring.util.classMembers.MemberInfo;
+import com.intellij.testIntegration.TestIntegrationUtils;
 import com.intellij.ui.CollectionListModel;
+import com.intellij.ui.ListSpeedSearch;
+import com.intellij.ui.ScrollPaneFactory;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.components.JBList;
+import com.intellij.ui.components.JBScrollPane;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.zhangyq.generate.test.config.DialogPluginSettings;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,55 +42,60 @@ public class FieldAndMethodConfirmPanel extends DialogWrapper {
     private JPanel fieldPanel;
     private PsiClass psiClass;
     final GridConstraints constraints;
+    private Project project;
+    private Editor editor;
+    private final MemberSelectionTable myMethodsTable;
+    private final MemberSelectionTable myFieldsTable;
 
-    public FieldAndMethodConfirmPanel(PsiClass psiClass) {
+    public FieldAndMethodConfirmPanel(PsiClass psiClass, Editor editor, Project project) {
         super(psiClass.getProject());
         this.psiClass = psiClass;
         this.constraints = new GridConstraints();
+        this.editor = editor;
+        this.project = project;
+        this.myFieldsTable = new MemberSelectionTable(Collections.emptyList(), null);
+        this.myMethodsTable = new MemberSelectionTable(Collections.emptyList(), null);
         init();
     }
 
     private void initFieldPanel() {
-        List<PsiField> collect = Arrays.stream(psiClass.getAllFields()).filter(
+        List<PsiField> fields = Arrays.stream(psiClass.getFields()).filter(
                 a -> !(a.getType() instanceof PsiPrimitiveType)).collect(
                 Collectors.toList());
-        CollectionListModel<PsiField> myFields = new CollectionListModel<>(collect);
-        JList<PsiField> psiFields = new JBList<>(myFields);
-        psiFields.setCellRenderer(new DefaultPsiElementCellRenderer());
-        ToolbarDecorator decorator = ToolbarDecorator.createDecorator(psiFields);
-        JPanel panel = decorator.createPanel();
-        LabeledComponent<JPanel> labeledComponent = LabeledComponent.create(panel, "");
-        fieldPanel.add(labeledComponent, constraints);
+        List<MemberInfo> fieldInfos = new ArrayList<>();
+        for (PsiField field : fields) {
+            fieldInfos.add(new MemberInfo(field));
+        }
+
+        myFieldsTable.setMemberInfos(fieldInfos);
+
+        JBScrollPane scrollPane = new JBScrollPane(myFieldsTable);
+
+        fieldPanel.add(scrollPane, constraints);
     }
 
     private void initMethodPanel() {
-        List<PsiMethod> collect = Arrays.stream(psiClass.getMethods()).filter(
-                a -> !a.getModifierList().hasModifierProperty(PsiModifier.PRIVATE)).collect(
-                Collectors.toList());
-        CollectionListModel<PsiMethod> myMethod = new CollectionListModel<>(collect);
-        JBList<PsiMethod> jMethodList = new JBList<>(myMethod);
-        jMethodList.setCellRenderer(new DefaultPsiElementCellRenderer());
-        jMethodList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        ToolbarDecorator decorator = ToolbarDecorator.createDecorator(jMethodList);
-        JPanel panel = decorator.createPanel();
-        LabeledComponent<JPanel> labeledComponent = LabeledComponent.create(panel, "");
-        methodPanel.add(labeledComponent, constraints);
-        //String[] methodNames = getMethodNames(this.psiClass);
-        //JList<String> methodList = new JBList<>(methodNames);
-        //methodPanel.add(new JScrollPane(methodList), constraints);
-    }
+        List<MemberInfo> methods = TestIntegrationUtils.extractClassMethods(this.psiClass, false);
+        this.myMethodsTable.setMemberInfos(methods);
 
+        // 将 MemberSelectionTable 放置在滚动窗格中
+        JBScrollPane scrollPane = new JBScrollPane(myMethodsTable);
 
-
-    private String[] getMethodNames(PsiClass selectedClass) {
-        // 在这里实现获取选中类的所有方法名的逻辑
-        return new String[]{"abc", "cdb"};
+        methodPanel.add(scrollPane, constraints);
     }
 
     @Override
     protected void dispose() {
         saveSize();
         super.dispose();
+    }
+
+    public List<PsiField> getChooseFields() {
+        return this.myFieldsTable.getSelectedMemberInfos().stream().map(x -> (PsiField)x.getMember()).collect(Collectors.toList());
+    }
+
+    public List<PsiMethod> getChooseMethods() {
+        return this.myMethodsTable.getSelectedMemberInfos().stream().map(x -> (PsiMethod)x.getMember()).collect(Collectors.toList());
     }
 
     @Override

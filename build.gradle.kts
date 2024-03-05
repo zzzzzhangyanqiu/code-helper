@@ -11,6 +11,18 @@ repositories {
     mavenCentral()
 }
 
+dependencies {
+    implementation("org.junit.jupiter:junit-jupiter-api:5.6.0")
+    implementation("org.junit.jupiter:junit-jupiter-engine:5.6.0")
+    implementation("org.projectlombok:lombok:1.18.8")
+    annotationProcessor("org.projectlombok:lombok:1.18.8")
+    implementation("commons-io:commons-io:2.5")
+    implementation("commons-io:commons-io:2.5")
+    implementation("com.alibaba:fastjson:1.2.62")
+    implementation("com.github.javafaker:javafaker:1.0.2")
+    implementation("org.jeasy:easy-random-core:4.3.0")
+}
+
 // Configure Gradle IntelliJ Plugin
 // Read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
 intellij {
