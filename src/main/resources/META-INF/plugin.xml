@@ -33,8 +33,8 @@
 
         </group>
 
-        <group id="com.zhangyq.generate" class="com.zhangyq.generate.GenerateGroup"
-               text="Generate Code" description="Generate code" popup="true">
+        <group id="com.zhangyq.generate" class="com.zhangyq.generate.CodeHelperGroup"
+               text="Code Helper" description="Code helper" popup="true">
             <add-to-group group-id="GenerateGroup" anchor="first"/>
         </group>
 

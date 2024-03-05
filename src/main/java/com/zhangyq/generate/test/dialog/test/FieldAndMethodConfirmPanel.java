@@ -1,31 +1,24 @@
-package com.zhangyq.generate.test.dialog;
+package com.zhangyq.generate.test.dialog.test;
 
-import com.intellij.codeInsight.lookup.LookupElement;
-import com.intellij.ide.util.DefaultPsiElementCellRenderer;
-import com.intellij.java.JavaBundle;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
-import com.intellij.openapi.ui.LabeledComponent;
-import com.intellij.openapi.ui.Messages;
-import com.intellij.psi.*;
-import com.intellij.psi.util.PsiUtil;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiField;
+import com.intellij.psi.PsiMethod;
+import com.intellij.psi.PsiPrimitiveType;
 import com.intellij.refactoring.ui.MemberSelectionTable;
 import com.intellij.refactoring.util.classMembers.MemberInfo;
 import com.intellij.testIntegration.TestIntegrationUtils;
-import com.intellij.ui.CollectionListModel;
-import com.intellij.ui.ListSpeedSearch;
-import com.intellij.ui.ScrollPaneFactory;
-import com.intellij.ui.ToolbarDecorator;
-import com.intellij.ui.components.JBList;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.uiDesigner.core.GridConstraints;
-import com.zhangyq.generate.test.config.DialogPluginSettings;
+import com.zhangyq.generate.test.common.DialogPluginSettings;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 

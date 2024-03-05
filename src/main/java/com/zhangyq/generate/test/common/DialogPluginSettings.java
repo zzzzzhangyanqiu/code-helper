@@ -1,4 +1,4 @@
-package com.zhangyq.generate.test.config;
+package com.zhangyq.generate.test.common;
 
 /**
  * @author zhangyq01

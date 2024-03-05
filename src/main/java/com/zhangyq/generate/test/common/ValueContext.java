@@ -7,6 +7,7 @@ import com.intellij.psi.util.PsiUtil;
 import com.zhangyq.generate.util.CodeUtil;
 import com.zhangyq.generate.util.FileUtil;
 
+import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -25,6 +26,7 @@ public class ValueContext {
     public static ValueContext INSTANCE = new ValueContext();
     public static boolean isJsonFileSource = false;
 
+    public static String resourcePath;
     /**
      * 事件
      */
@@ -61,6 +63,7 @@ public class ValueContext {
         filePath = FileUtil.getUnitFilePath(psiFile);
         fileName = FileUtil.genJavaFileName(psiClass);
         path = Paths.get(filePath, fileName);
+        resourcePath = psiFile.getProject().getBasePath() + "/src/main/resources";
     }
 
     public void loadClass() {
@@ -143,15 +146,15 @@ public class ValueContext {
         return event;
     }
 
-    public static void setIsJsonFileSource(boolean v) {
-        isJsonFileSource = v;
-    }
-
     public static boolean isJsonFileSource() {
         return isJsonFileSource;
     }
 
     public static ValueContext getContext() {
         return INSTANCE;
+    }
+
+    public static String getResourcePath() {
+        return resourcePath;
     }
 }

@@ -3,25 +3,17 @@ package com.zhangyq.generate.test;
 import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.fileTypes.FileType;
-import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.psi.util.PsiUtil;
-import com.intellij.testIntegration.TestIntegrationUtils;
 import com.zhangyq.generate.test.common.ValueContext;
-import com.zhangyq.generate.test.config.DialogPluginSettings;
-import com.zhangyq.generate.test.dialog.FieldAndMethodConfirmPanel;
-import com.zhangyq.generate.test.generator.file.CodeGenerator;
+import com.zhangyq.generate.test.dialog.test.FieldAndMethodConfirmPanel;
+import com.zhangyq.generate.test.generator.file.UnitTestCodeGenerator;
 import com.zhangyq.generate.test.generator.file.FileCreateTask;
 import com.zhangyq.generate.util.PluginUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
-
-import static com.intellij.openapi.actionSystem.CommonDataKeys.PSI_ELEMENT;
 
 /**
  * @author zhangyq01
@@ -57,9 +49,13 @@ public class TestClassGenerateAction extends AnAction {
         fieldAndMethodConfirmPanel.show();
 
         if(fieldAndMethodConfirmPanel.isOK()) {
-            CodeGenerator codeGenerator = new CodeGenerator(fieldAndMethodConfirmPanel.getChooseFields(), fieldAndMethodConfirmPanel.getChooseMethods());
-            ApplicationManager.getApplication().runWriteAction(
-                    new FileCreateTask(ValueContext.getFilePath(), ValueContext.getFileName(), codeGenerator.genContent()));
+            try {
+                UnitTestCodeGenerator unitTestCodeGenerator = new UnitTestCodeGenerator(fieldAndMethodConfirmPanel.getChooseFields(), fieldAndMethodConfirmPanel.getChooseMethods());
+                ApplicationManager.getApplication().runWriteAction(
+                        new FileCreateTask(ValueContext.getFilePath(), ValueContext.getFileName(), unitTestCodeGenerator.genContent()));
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
         }
     }
 

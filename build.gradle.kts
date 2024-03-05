@@ -21,6 +21,7 @@ dependencies {
     implementation("com.alibaba:fastjson:1.2.62")
     implementation("com.github.javafaker:javafaker:1.0.2")
     implementation("org.jeasy:easy-random-core:4.3.0")
+    implementation("org.freemarker:freemarker:2.3.32")
 }
 
 // Configure Gradle IntelliJ Plugin

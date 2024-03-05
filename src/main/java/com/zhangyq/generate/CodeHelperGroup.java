@@ -1,9 +1,7 @@
 package com.zhangyq.generate;
 
 import com.intellij.openapi.actionSystem.*;
-import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.project.Project;
-import com.intellij.psi.PsiFile;
 import com.zhangyq.generate.test.TestClassGenerateAction;
 import com.zhangyq.generate.util.PluginUtil;
 import org.jetbrains.annotations.NotNull;
@@ -11,14 +9,13 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * @author zhangyq01
- * @ClassName: GenerateGroup
+ * @ClassName: CodeHelperGroup
  * @date 2024/1/24
  */
-public class GenerateGroup extends ActionGroup {
+public class CodeHelperGroup extends ActionGroup {
 
     @Override
     public AnAction @NotNull [] getChildren(@Nullable AnActionEvent e) {

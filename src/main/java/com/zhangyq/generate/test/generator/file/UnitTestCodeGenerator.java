@@ -1,15 +1,16 @@
 package com.zhangyq.generate.test.generator.file;
 
+import com.google.common.collect.Maps;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.psi.*;
 import com.intellij.psi.util.PsiUtil;
-import com.zhangyq.generate.test.common.MockitoConstants;
 import com.zhangyq.generate.test.common.ValueContext;
 import com.zhangyq.generate.test.generator.value.JsonFileGenerator;
 import com.zhangyq.generate.test.pojo.MyMethod;
 import com.zhangyq.generate.util.CodeUtil;
+import com.zhangyq.generate.util.FileUtil;
 import lombok.Data;
-import org.apache.commons.lang3.StringUtils;
+import lombok.EqualsAndHashCode;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -18,13 +19,13 @@ import static com.zhangyq.generate.test.common.MockitoConstants.*;
 
 /**
  * @author zhangyq01
- * @ClassName: CodeGenerator
+ * @ClassName: 单元测试代码生成
  * @date 2024/3/5
  */
 @Data
-public class CodeGenerator {
+@EqualsAndHashCode(callSuper=false)
+public class UnitTestCodeGenerator extends TestFreemarkerConfiguration {
     ValueContext valueContext = ValueContext.getContext();
-
     /**
      * 当前类
      */
@@ -46,7 +47,7 @@ public class CodeGenerator {
     private Map<String, Integer> methodCount = new HashMap<>();
     private JsonFileGenerator jsonFileGenerator = new JsonFileGenerator();
 
-    public CodeGenerator(List<PsiField> fields, List<PsiMethod> needMockMethods) {
+    public UnitTestCodeGenerator(List<PsiField> fields, List<PsiMethod> needMockMethods) {
         this.psiClass = ValueContext.getPsiClass();
         this.needMockFields = fields;
         this.needMockMethods = needMockMethods.stream().map(a -> new MyMethod(a, this)).collect(Collectors.toList());
@@ -66,7 +67,8 @@ public class CodeGenerator {
         String path = parent.getVirtualFile().getPath();
         String s = path.replaceAll("/src/main/java.*", "/src/test/java/com/util/");
         ApplicationManager.getApplication().runWriteAction(
-                new FileCreateTask(s, "TestUtils.java", MockitoConstants.TEST_UTILS_CLASS));
+                new FileCreateTask(s, "TestUtils.java",
+                        FileUtil.generateString("TestUtils.ftl", Maps.newHashMap(), this)));
     }
 
     public String genContent() {

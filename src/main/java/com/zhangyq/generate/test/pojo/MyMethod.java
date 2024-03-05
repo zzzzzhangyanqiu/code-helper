@@ -6,7 +6,7 @@ import com.intellij.psi.*;
 import com.intellij.psi.impl.source.PsiClassReferenceType;
 import com.intellij.psi.util.PsiUtil;
 import com.zhangyq.generate.test.common.ValueContext;
-import com.zhangyq.generate.test.generator.file.CodeGenerator;
+import com.zhangyq.generate.test.generator.file.UnitTestCodeGenerator;
 import com.zhangyq.generate.test.generator.file.FileCreateTask;
 import com.zhangyq.generate.util.CodeUtil;
 import com.zhangyq.generate.util.FileUtil;
@@ -44,15 +44,15 @@ public class MyMethod {
 
     private Set<String> needImports;
 
-    private CodeGenerator codeGenerator;
+    private UnitTestCodeGenerator unitTestCodeGenerator;
 
     private String text;
     Map<String, Integer> nameCount = new HashMap<>();
     ValueContext valueContext = ValueContext.getContext();
 
-    public MyMethod(PsiMethod method, CodeGenerator codeGenerator) {
+    public MyMethod(PsiMethod method, UnitTestCodeGenerator unitTestCodeGenerator) {
         this.method = method;
-        this.codeGenerator = codeGenerator;
+        this.unitTestCodeGenerator = unitTestCodeGenerator;
         needMockFieldMethod = new HashMap<>();
         needMockFields = new HashMap<>();
         needImports = new HashSet<>();
@@ -62,7 +62,7 @@ public class MyMethod {
         String methodName = method.getName();
         String methodNameCount = methodName;
         // 同名方法
-        Map<String, Integer> methodCount = codeGenerator.getMethodCount();
+        Map<String, Integer> methodCount = unitTestCodeGenerator.getMethodCount();
         if (methodCount.containsKey(methodName)) {
             Integer count = methodCount.get(methodName);
             methodNameCount = methodNameCount + count;
@@ -73,7 +73,8 @@ public class MyMethod {
 
         String methodContent = this.generateMethodContent(method, methodNameCount);
 
-        String filePath = codeGenerator.getPsiFile().getVirtualFile().getPath();
+        String filePath = unitTestCodeGenerator.getPsiFile().getVirtualFile().getPath();
+        System.out.println("filePath:" + filePath);
         int index = filePath.indexOf("java");
         filePath = filePath.substring(index + 5).replace(".java", "");
         String fileName = FileUtil.getJsonFileName(methodNameCount);
@@ -128,13 +129,13 @@ public class MyMethod {
         if (returnType.getPresentableText().equals("void")) {
             code.append(
                     String.format("\t\t%s.%s(%s);\n",
-                            CodeUtil.getCamelCase(codeGenerator.getPsiClass().getName()),
+                            CodeUtil.getCamelCase(unitTestCodeGenerator.getPsiClass().getName()),
                             method.getName(), param));
         } else {
             getImport(returnType);
             code.append(
                     String.format("\t\t%s result = %s.%s(%s);\n", returnType.getPresentableText(),
-                            CodeUtil.getCamelCase(codeGenerator.getPsiClass().getName()),
+                            CodeUtil.getCamelCase(unitTestCodeGenerator.getPsiClass().getName()),
                             method.getName(), param));
         }
         // 保存json数据
@@ -193,13 +194,13 @@ public class MyMethod {
     private String generateMockMethod(PsiMethod method, Map<PsiType, MultiValuesWithClass> fields) {
         StringBuilder content = new StringBuilder();
         //modifierList.get
-        Map<PsiMethod, Boolean> collect = Arrays.stream(codeGenerator.getPsiClass().getAllMethods()).filter(
+        Map<PsiMethod, Boolean> collect = Arrays.stream(unitTestCodeGenerator.getPsiClass().getAllMethods()).filter(
                 a -> !a.equals(method) && !a.getName().equals("equals")).collect(
                 Collectors.toMap(Function.identity(), a -> true));
 
         String body = CodeUtil.getBody(method, collect);
-        for (int i = 0; i < codeGenerator.getNeedMockFields().size(); i++) {
-            PsiField field = codeGenerator.getNeedMockFields().get(i);
+        for (int i = 0; i < unitTestCodeGenerator.getNeedMockFields().size(); i++) {
+            PsiField field = unitTestCodeGenerator.getNeedMockFields().get(i);
             Set<String> alreadyMockMethods = new HashSet<>();
             Pattern pattern = Pattern.compile(field.getName() + ".\\w+\\(.*\\)");
             Matcher matcher = pattern.matcher(body);
@@ -310,7 +311,7 @@ public class MyMethod {
      * @param fields
      */
     private void saveSourceData(String methodName, Map<PsiType, MultiValuesWithClass> fields) {
-        String filePath = FileUtil.getJsonFilePath(this.codeGenerator.getPsiFile());
+        String filePath = FileUtil.getJsonFilePath(this.unitTestCodeGenerator.getPsiFile());
         String fileName = FileUtil.getJsonFileName(methodName);
         Map<String, Object> collect = fields.entrySet().stream().collect(
                 Collectors.toMap(a -> a.getKey().getPresentableText(), a -> {
@@ -394,8 +395,8 @@ public class MyMethod {
         return needImports;
     }
 
-    public CodeGenerator getCodeGenerator() {
-        return codeGenerator;
+    public UnitTestCodeGenerator getUnitTestCodeGenerator() {
+        return unitTestCodeGenerator;
     }
 
     public String getText() {
