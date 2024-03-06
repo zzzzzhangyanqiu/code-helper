@@ -98,7 +98,7 @@ public class MyMethod {
         } else {
             return "\t@ParameterizedTest\n" +
                     String.format("\t@ValueSource(strings = {\"/%s/%s\"})\n"
-                                    + " \tpublic void %sTest(String str) {\n\t\tJSONObject arg= TestUtils.getTestArg(str);\n"
+                                    + " \tpublic void %sTest(String str) {\n\t\tJSONObject arg = TestUtils.getTestArg(str);\n"
                                     + "%s\t}\n\n", filePath, fileName, methodNameCount,
                             methodContent);
         }
