@@ -16,13 +16,13 @@
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
     <description>
         <![CDATA[
-            A plugin that helps in development
-            <br />
-            features:
+            <p>A plugin that helps in development</p>
+            <p>features:
             <ul>
                 <li>生成单元测试类和单元测试方法</li>
                 <li>为已有测试类添加测试方法</li>
             </ul>
+            </p>
         ]]>
     </description>
 
