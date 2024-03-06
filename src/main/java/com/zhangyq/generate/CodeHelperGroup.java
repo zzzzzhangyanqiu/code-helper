@@ -2,7 +2,8 @@ package com.zhangyq.generate;
 
 import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.project.Project;
-import com.zhangyq.generate.code.TestClassGenerateAction;
+import com.zhangyq.generate.code.action.test.TestClassGenerateAction;
+import com.zhangyq.generate.code.action.test.TestMethodGenerateAction;
 import com.zhangyq.generate.util.PluginUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -28,6 +29,7 @@ public class CodeHelperGroup extends ActionGroup {
         }
         final List<AnAction> children = new ArrayList<>();
         children.add(new TestClassGenerateAction());
+        children.add(new TestMethodGenerateAction());
         return children.toArray(new AnAction[0]);
     }
 

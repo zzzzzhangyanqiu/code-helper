@@ -74,7 +74,6 @@ public class MyMethod {
         String methodContent = this.generateMethodContent(method, methodNameCount);
 
         String filePath = unitTestCodeGenerator.getPsiFile().getVirtualFile().getPath();
-        System.out.println("filePath:" + filePath);
         int index = filePath.indexOf("java");
         filePath = filePath.substring(index + 5).replace(".java", "");
         String fileName = FileUtil.getJsonFileName(methodNameCount);
@@ -92,12 +91,12 @@ public class MyMethod {
      */
     private String generateText(String filePath, String fileName, String methodNameCount, String methodContent) {
         if (ValueContext.isJsonFileSource()) {
-            return String.format("@ParameterizedTest\n"
+            return String.format("\t@ParameterizedTest\n"
                             + "\t@JsonFileSource(resources = {\"/%s/%s\"})\n"
                             + " \tpublic void %sTest(JSONObject arg) {\n%s\t}\n\n", filePath, fileName, methodNameCount,
                     methodContent);
         } else {
-            return "@ParameterizedTest\n" +
+            return "\t@ParameterizedTest\n" +
                     String.format("\t@ValueSource(strings = {\"/%s/%s\"})\n"
                                     + " \tpublic void %sTest(String str) {\n\t\tJSONObject arg= TestUtils.getTestArg(str);\n"
                                     + "%s\t}\n\n", filePath, fileName, methodNameCount,
@@ -212,7 +211,6 @@ public class MyMethod {
 
                 String methodKey = filedCanonicalName + methodShortName + CodeUtil.getCount(methodName,
                         ",");
-                System.out.println("methodKey:" + methodKey);
                 if (!alreadyMockMethods.contains(methodKey)) {
                     alreadyMockMethods.add(methodKey);
                     // 找到方法
@@ -257,7 +255,6 @@ public class MyMethod {
         String result = attrName;
         if (nameCount.containsKey(attrName)) {
             int count = nameCount.get(attrName);
-            System.out.println("map:" + nameCount + "attrname:" + attrName + "count:" + count);
             result = attrName + count;
             nameCount.put(attrName, count + 1);
         } else {

@@ -1,26 +1,29 @@
-package com.zhangyq.generate.code;
+package com.zhangyq.generate.code.action.test;
 
 import com.intellij.openapi.actionSystem.*;
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.ui.Messages;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiMethod;
 import com.zhangyq.generate.code.common.ValueContext;
-import com.zhangyq.generate.code.dialog.test.FieldAndMethodConfirmPanel;
+import com.zhangyq.generate.code.dialog.test.MethodSelectDialog;
+import com.zhangyq.generate.code.generator.file.FileAppendTask;
 import com.zhangyq.generate.code.generator.file.UnitTestCodeGenerator;
-import com.zhangyq.generate.code.generator.file.FileCreateTask;
 import com.zhangyq.generate.util.PluginUtil;
 import org.jetbrains.annotations.NotNull;
 
+import java.nio.file.Files;
+import java.util.List;
 import java.util.Objects;
 
 /**
  * @author zhangyq01
- * @ClassName: TestClassGenerateAction
- * @date 2024/1/25
+ * @ClassName: TestMethodGenerateAction
+ * @date 2024/3/06
  */
-public class TestClassGenerateAction extends AnAction {
+public class TestMethodGenerateAction extends AnAction {
 
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
@@ -43,25 +46,33 @@ public class TestClassGenerateAction extends AnAction {
         }
 
         ValueContext.setEvent(e, psiFile, psiClass);
+
+        if (!Files.exists(ValueContext.getPath())) {
+            String message = "测试类不存在, 请先生成单元测试类";
+            Messages.showMessageDialog(e.getProject(), message, "Generate Failed", null);
+            return;
+        }
+
         ValueContext.getContext().loadClass();
 
-        FieldAndMethodConfirmPanel fieldAndMethodConfirmPanel = new FieldAndMethodConfirmPanel(psiClass, e.getData(PlatformDataKeys.PROJECT));
-        fieldAndMethodConfirmPanel.show();
+        MethodSelectDialog methodSelectDialog = new MethodSelectDialog(psiClass);
+        methodSelectDialog.show();
 
-        if(fieldAndMethodConfirmPanel.isOK()) {
+        if(methodSelectDialog.isOK()) {
             try {
-                UnitTestCodeGenerator unitTestCodeGenerator = new UnitTestCodeGenerator(fieldAndMethodConfirmPanel.getChooseFields(), fieldAndMethodConfirmPanel.getChooseMethods());
-                ApplicationManager.getApplication().runWriteAction(
-                        new FileCreateTask(ValueContext.getFilePath(), ValueContext.getFileName(), unitTestCodeGenerator.genContent()));
+                List<PsiMethod> chooseMethods = methodSelectDialog.getChooseMethods();
+                UnitTestCodeGenerator unitTestCodeGenerator = new UnitTestCodeGenerator(psiClass, chooseMethods, ValueContext.getPsiFile());
+                String s = unitTestCodeGenerator.genMethodBody();
+                new FileAppendTask(s).run();
             } catch (Exception exception) {
                 exception.printStackTrace();
             }
         }
     }
 
-    public TestClassGenerateAction() {
+    public TestMethodGenerateAction() {
         super();
-        getTemplatePresentation().setText("Generate Test Class");
+        getTemplatePresentation().setText("Add Test Method");
     }
 
     /**

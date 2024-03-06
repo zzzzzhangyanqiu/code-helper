@@ -2,6 +2,8 @@ package com.zhangyq.generate.code.generator.file;
 
 import com.google.common.collect.Maps;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.vfs.LocalFileSystem;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
 import com.intellij.psi.util.PsiUtil;
 import com.zhangyq.generate.code.common.ValueContext;
@@ -59,6 +61,17 @@ public class UnitTestCodeGenerator extends TestFreemarkerConfiguration {
         }
     }
 
+    public UnitTestCodeGenerator(PsiClass psiClass, List<PsiMethod> needMockMethods, PsiFile psiFile) {
+        this.psiClass = psiClass;
+        this.needMockMethods = needMockMethods.stream().map(a -> new MyMethod(a, this)).collect(Collectors.toList());
+        // todo 有一些小问题，比如不需要mock的fields
+        VirtualFile virtualFile = LocalFileSystem.getInstance().findFileByIoFile(ValueContext.getPath().toFile());
+        PsiJavaFile file = (PsiJavaFile)PsiManager.getInstance(ValueContext.getEvent().getProject()).findFile(virtualFile);
+        PsiClass aClass = file.getClasses()[0];
+        this.needMockFields = Arrays.asList(aClass.getAllFields());
+        this.psiFile = psiFile;
+    }
+
     private void saveTestUtils() {
         PsiDirectory parent = psiFile.getParent();
         if(Objects.isNull(parent)) {
@@ -70,9 +83,8 @@ public class UnitTestCodeGenerator extends TestFreemarkerConfiguration {
         if(file.exists()) {
            return;
         }
-        ApplicationManager.getApplication().runWriteAction(
-                new FileCreateTask(s, "TestUtils.java",
-                        FileUtil.generateString("TestUtils.ftl", Maps.newHashMap(), this)));
+        FileCreateTask fileCreateTask = new FileCreateTask(s, "TestUtils.java", FileUtil.generateString("TestUtils.ftl", Maps.newHashMap(), this));
+        ApplicationManager.getApplication().runWriteAction(fileCreateTask);
     }
 
     public String genContent() {
@@ -120,5 +132,14 @@ public class UnitTestCodeGenerator extends TestFreemarkerConfiguration {
             String canonicalText = a.getType().getCanonicalText();
             return CodeUtil.filterGeneric(canonicalText);
         }).distinct().forEach(t -> needImports.add(String.format("import %s;\n", t)));
+    }
+
+    public String genMethodBody() {
+        StringBuilder code = new StringBuilder();
+        for (MyMethod method : needMockMethods) {
+            method.build();
+            code.append(method.getText());
+        }
+        return code.toString();
     }
 }

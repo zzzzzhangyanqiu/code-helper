@@ -97,7 +97,6 @@ public class JsonFileGenerator {
              * 数组类型
              */
             if (type instanceof PsiArrayType) {
-                System.out.println("is Array :" + type);
                 List<Object> list = new ArrayList<>();
                 PsiType deepType = type.getDeepComponentType();
                 list.add(typeResolve(deepType, level));
@@ -115,7 +114,6 @@ public class JsonFileGenerator {
             if (isCollection(type)) {
                 List<Object> list = new ArrayList<>();
                 PsiType deepType = CodeUtil.getCollectionType(type);
-                System.out.println("json deepType:"+deepType.getCanonicalText());
                 list.add(typeResolve(deepType, level));
                 return list;
             }

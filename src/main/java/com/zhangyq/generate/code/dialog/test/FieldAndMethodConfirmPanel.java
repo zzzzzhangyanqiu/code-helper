@@ -11,7 +11,7 @@ import com.intellij.refactoring.util.classMembers.MemberInfo;
 import com.intellij.testIntegration.TestIntegrationUtils;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.uiDesigner.core.GridConstraints;
-import com.zhangyq.generate.code.common.DialogPluginSettings;
+import com.zhangyq.generate.code.common.TestDialogPluginSettings;
 import com.zhangyq.generate.code.common.ValueContext;
 import com.zhangyq.generate.util.FileUtil;
 import org.jetbrains.annotations.Nullable;
@@ -141,15 +141,15 @@ public class FieldAndMethodConfirmPanel extends DialogWrapper {
         constraints.setRow(0);
         constraints.setFill(GridConstraints.FILL_BOTH);
         setTitle("Choose Fields and Methods to Generate");
-        setSize(DialogPluginSettings.getDialogWidth(), DialogPluginSettings.getDialogHeight());
+        setSize(TestDialogPluginSettings.getClassDialogWidth(), TestDialogPluginSettings.getClassDialogHeight());
         initMethodPanel();
         initFieldPanel();
         super.init();
     }
 
     private void saveSize() {
-        DialogPluginSettings.setDialogWidth(super.getWindow().getWidth());
-        DialogPluginSettings.setDialogHeight(super.getWindow().getHeight());
+        TestDialogPluginSettings.setClassDialogWidth(super.getWindow().getWidth());
+        TestDialogPluginSettings.setClassDialogHeight(super.getWindow().getHeight());
     }
 
     @Override

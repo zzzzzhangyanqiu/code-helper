@@ -67,7 +67,6 @@ public class CodeUtil {
         PsiType deepComponentType = PsiUtil.extractIterableTypeParameter(type, false);
         if (deepComponentType==null){
             // 集合泛型
-            System.out.println("deepComponentType is null"+type.getCanonicalText());
             if(type instanceof PsiClassReferenceType) {
                 PsiClassReferenceType referenceType = (PsiClassReferenceType)type;
                 if("List".equals(referenceType.getName())) {

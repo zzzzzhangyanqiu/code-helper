@@ -51,5 +51,5 @@ public class ${targetClassName}Test <#if baseTestClass??>extends ${baseTestClass
 </#if>
 <#if methodList??>
     <#list methodList as method>
-    ${method}</#list></#if>
+${method}</#list></#if>
 }
