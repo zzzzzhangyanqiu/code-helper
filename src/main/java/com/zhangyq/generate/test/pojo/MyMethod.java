@@ -92,12 +92,12 @@ public class MyMethod {
      */
     private String generateText(String filePath, String fileName, String methodNameCount, String methodContent) {
         if (ValueContext.isJsonFileSource()) {
-            return String.format("\t@ParameterizedTest\n"
+            return String.format("@ParameterizedTest\n"
                             + "\t@JsonFileSource(resources = {\"/%s/%s\"})\n"
                             + " \tpublic void %sTest(JSONObject arg) {\n%s\t}\n\n", filePath, fileName, methodNameCount,
                     methodContent);
         } else {
-            return "\t@ParameterizedTest\n" +
+            return "@ParameterizedTest\n" +
                     String.format("\t@ValueSource(strings = {\"/%s/%s\"})\n"
                                     + " \tpublic void %sTest(String str) {\n\t\tJSONObject arg= TestUtils.getTestArg(str);\n"
                                     + "%s\t}\n\n", filePath, fileName, methodNameCount,

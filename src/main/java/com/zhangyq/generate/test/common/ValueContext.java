@@ -35,6 +35,10 @@ public class ValueContext {
      * 目标java类
      */
     public static PsiClass psiClass;
+    /**
+     * 选择的baseTest
+     */
+    public static PsiFile baseTestFile;
 
     /**
      * java文件
@@ -156,5 +160,13 @@ public class ValueContext {
 
     public static String getResourcePath() {
         return resourcePath;
+    }
+
+    public static PsiFile getBaseTestFile() {
+        return baseTestFile;
+    }
+
+    public static void setBaseTestFile(PsiFile baseTestFile) {
+        ValueContext.baseTestFile = baseTestFile;
     }
 }

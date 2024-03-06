@@ -15,7 +15,6 @@ public class MockitoConstants {
             + "import org.junit.jupiter.api.extension.ExtendWith;\n"
             + "import org.junit.jupiter.params.ParameterizedTest;\n"
             + "import org.mockito.InjectMocks;\n"
-            + "import org.mockito.Matchers;\n"
             + "import org.mockito.Mock;\n"
             + "import org.mockito.MockitoAnnotations;\n"
             + "import org.mockito.junit.jupiter.MockitoExtension;\n"

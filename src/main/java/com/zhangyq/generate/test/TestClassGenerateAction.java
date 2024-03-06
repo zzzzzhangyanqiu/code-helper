@@ -45,7 +45,7 @@ public class TestClassGenerateAction extends AnAction {
         ValueContext.setEvent(e, psiFile, psiClass);
         ValueContext.getContext().loadClass();
 
-        FieldAndMethodConfirmPanel fieldAndMethodConfirmPanel = new FieldAndMethodConfirmPanel(psiClass, editor, e.getData(PlatformDataKeys.PROJECT));
+        FieldAndMethodConfirmPanel fieldAndMethodConfirmPanel = new FieldAndMethodConfirmPanel(psiClass, e.getData(PlatformDataKeys.PROJECT));
         fieldAndMethodConfirmPanel.show();
 
         if(fieldAndMethodConfirmPanel.isOK()) {

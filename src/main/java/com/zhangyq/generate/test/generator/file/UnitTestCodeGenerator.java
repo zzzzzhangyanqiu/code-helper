@@ -6,16 +6,16 @@ import com.intellij.psi.*;
 import com.intellij.psi.util.PsiUtil;
 import com.zhangyq.generate.test.common.ValueContext;
 import com.zhangyq.generate.test.generator.value.JsonFileGenerator;
+import com.zhangyq.generate.test.pojo.MyField;
 import com.zhangyq.generate.test.pojo.MyMethod;
 import com.zhangyq.generate.util.CodeUtil;
 import com.zhangyq.generate.util.FileUtil;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static com.zhangyq.generate.test.common.MockitoConstants.*;
 
 /**
  * @author zhangyq01
@@ -66,6 +66,10 @@ public class UnitTestCodeGenerator extends TestFreemarkerConfiguration {
         }
         String path = parent.getVirtualFile().getPath();
         String s = path.replaceAll("/src/main/java.*", "/src/test/java/com/util/");
+        File file = new File(s + "TestUtils.java");
+        if(file.exists()) {
+           return;
+        }
         ApplicationManager.getApplication().runWriteAction(
                 new FileCreateTask(s, "TestUtils.java",
                         FileUtil.generateString("TestUtils.ftl", Maps.newHashMap(), this)));
@@ -77,21 +81,38 @@ public class UnitTestCodeGenerator extends TestFreemarkerConfiguration {
             method.build();
             needImports.addAll(method.getNeedImports());
         }
-        StringBuilder code = new StringBuilder();
-        code.append(generatePackageInfo());
-        code.append("\n");
-        needImports.stream().filter(a -> a.contains(".")).forEach(a -> code.append(a));
-        code.append(generateCommonUnitImport());
-        code.append(generateClassDeclaration());
-        code.append(generateTestObject());
-        code.append(generateMockObjects());
-        code.append(generateSetUpMethod());
+        needImports = needImports.stream()
+                .filter(a -> a.contains(".") && !a.contains("String[]"))
+                .collect(Collectors.toSet());
 
-        for (MyMethod method : needMockMethods) {
-            code.append(method.getText());
+        List<String> methodList = needMockMethods.stream().map(MyMethod::getText).collect(Collectors.toList());
+
+        Map<String, Object> modelMap = Maps.newHashMap();
+
+        PsiFile baseTestFile = ValueContext.getBaseTestFile();
+        if(Objects.nonNull(baseTestFile) && baseTestFile instanceof PsiJavaFile) {
+            String packageName = ((PsiJavaFile) baseTestFile).getPackageName();
+            String className = FileUtil.extractClassName(baseTestFile);
+            needImports.add(String.format("import %s.%s;\n", packageName, className));
+            modelMap.put("baseTestClass", className);
         }
-        code.append("}");
-        return code.toString();
+
+        modelMap.put("packageName", PsiUtil.getPackageName(psiClass));
+        modelMap.put("needImports", needImports);
+        modelMap.put("targetClassName", psiClass.getName());
+        modelMap.put("needMockFields", generateMockObjects());
+        modelMap.put("methodList", methodList);
+
+        return FileUtil.generateString("TestClass.ftl", modelMap, this);
+    }
+
+    /**
+     * 生成需要mock的成员  直接使用freemarker获取presentableText有些问题
+     *
+     * @return
+     */
+    private List<MyField> generateMockObjects() {
+        return needMockFields.stream().map(MyField::new).collect(Collectors.toList());
     }
 
     private void generateImports() {
@@ -99,35 +120,5 @@ public class UnitTestCodeGenerator extends TestFreemarkerConfiguration {
             String canonicalText = a.getType().getCanonicalText();
             return CodeUtil.filterGeneric(canonicalText);
         }).distinct().forEach(t -> needImports.add(String.format("import %s;\n", t)));
-    }
-
-    private String generatePackageInfo() {
-        return String.format("package %s;\n", PsiUtil.getPackageName(psiClass));
-    }
-
-    private String generateCommonUnitImport() {
-        return COMMON_IMPORT;
-    }
-
-    private String generateClassDeclaration() {
-        return COMMON_ANNOTATION + String.format("public class %sTest  {\n", psiClass.getName());
-    }
-
-    private String generateTestObject() {
-        String name = psiClass.getName();
-        assert name != null;
-        return "\t@InjectMocks\n" + String.format("\tprivate %s %s=new %s(); \n", name, CodeUtil.getCamelCase(name), name);
-    }
-
-    private String generateMockObjects() {
-        return needMockFields.stream().map(a -> {
-            String canonicalText = a.getType().getPresentableText();
-            return "\t@Mock\n" + String.format("\tprivate %s %s; \n\n", canonicalText,
-                    a.getName());
-        }).collect(Collectors.joining());
-    }
-
-    private String generateSetUpMethod() {
-        return BEFORE_SETUP + "\n";
     }
 }
