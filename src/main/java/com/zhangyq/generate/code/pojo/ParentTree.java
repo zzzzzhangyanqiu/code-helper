@@ -4,14 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import lombok.Getter;
-import lombok.Setter;
-
 /**
  * 为了解决属性循环的问题，比如Tree结构，不会生成过深的结构
  */
-@Getter
-@Setter
 public class ParentTree {
     private ParentTree parent;
     private Map<String,ParentTree> sonList;

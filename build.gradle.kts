@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.zhangyq"
-version = "1.0-SNAPSHOT"
+version = "1.0.0"
 
 repositories {
     mavenCentral()
@@ -14,8 +14,6 @@ repositories {
 dependencies {
     implementation("org.junit.jupiter:junit-jupiter-api:5.6.0")
     implementation("org.junit.jupiter:junit-jupiter-engine:5.6.0")
-    implementation("org.projectlombok:lombok:1.18.8")
-    annotationProcessor("org.projectlombok:lombok:1.18.8")
     implementation("commons-io:commons-io:2.5")
     implementation("commons-io:commons-io:2.5")
     implementation("com.alibaba:fastjson:1.2.62")

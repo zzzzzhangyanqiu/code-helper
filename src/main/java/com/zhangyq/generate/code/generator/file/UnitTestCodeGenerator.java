@@ -12,8 +12,6 @@ import com.zhangyq.generate.code.pojo.MyField;
 import com.zhangyq.generate.code.pojo.MyMethod;
 import com.zhangyq.generate.util.CodeUtil;
 import com.zhangyq.generate.util.FileUtil;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.io.File;
 import java.util.*;
@@ -24,8 +22,6 @@ import java.util.stream.Collectors;
  * @ClassName: 单元测试代码生成
  * @date 2024/3/5
  */
-@Data
-@EqualsAndHashCode(callSuper=false)
 public class UnitTestCodeGenerator extends TestFreemarkerConfiguration {
     ValueContext valueContext = ValueContext.getContext();
     /**
@@ -141,5 +137,21 @@ public class UnitTestCodeGenerator extends TestFreemarkerConfiguration {
             code.append(method.getText());
         }
         return code.toString();
+    }
+
+    public PsiClass getPsiClass() {
+        return psiClass;
+    }
+
+    public List<PsiField> getNeedMockFields() {
+        return needMockFields;
+    }
+
+    public PsiFile getPsiFile() {
+        return psiFile;
+    }
+
+    public Map<String, Integer> getMethodCount() {
+        return methodCount;
     }
 }

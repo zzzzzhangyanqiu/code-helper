@@ -2,14 +2,12 @@ package com.zhangyq.generate.code.pojo;
 
 import com.intellij.psi.PsiField;
 import com.intellij.psi.PsiType;
-import lombok.Data;
 
 /**
  * @author zhangyq01
  * @ClassName: MyField
  * @date 2024/3/6
  */
-@Data
 public class MyField {
     private final PsiType psiType;
 
@@ -25,5 +23,21 @@ public class MyField {
         this.psiType = psiField.getType();
         this.presentableText = psiField.getType().getPresentableText();
         this.name = psiField.getName();
+    }
+
+    public PsiType getPsiType() {
+        return psiType;
+    }
+
+    public PsiField getPsiField() {
+        return psiField;
+    }
+
+    public String getPresentableText() {
+        return presentableText;
+    }
+
+    public String getName() {
+        return name;
     }
 }

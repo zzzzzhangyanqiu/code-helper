@@ -10,7 +10,6 @@ import com.zhangyq.generate.code.generator.file.UnitTestCodeGenerator;
 import com.zhangyq.generate.code.generator.file.FileCreateTask;
 import com.zhangyq.generate.util.CodeUtil;
 import com.zhangyq.generate.util.FileUtil;
-import lombok.Data;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.*;
@@ -27,7 +26,6 @@ import static com.zhangyq.generate.util.CodeUtil.isCollection;
  * @author 有尘
  * @date 2021/10/9
  */
-@Data
 public class MyMethod {
     /**
      * 测试方法
