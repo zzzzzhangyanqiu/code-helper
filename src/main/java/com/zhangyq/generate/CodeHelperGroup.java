@@ -2,7 +2,7 @@ package com.zhangyq.generate;
 
 import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.project.Project;
-import com.zhangyq.generate.test.TestClassGenerateAction;
+import com.zhangyq.generate.code.TestClassGenerateAction;
 import com.zhangyq.generate.util.PluginUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
