@@ -9,18 +9,33 @@
 
     <version>1.0.0</version>
     <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
-    <vendor email="zhangyanqiu@pharmcube.com" url="https://www.pharmcube.com/">pharmcube</vendor>
+    <vendor email="zzzzzhangyanqiu@163.com" url="https://github.com/zzzzzhangyanqiu/">zzzzzhangyanqiu</vendor>
 
     <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
          Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
     <description>
         <![CDATA[
-            <p>一款帮助日常开发的idea插件，目前功能列表
+            <p>A plugin that helps with development</p>
+
+            <p>It can be used: Right-click > Generate > Code Helper</p>
+            <p>The unit test related functions are developed on the basis of <a href="https://plugins.jetbrains.com/plugin/18420-jcode5">jcode5</a>, and some problems in the use of the original plugin are optimized</p>
+            <p>features:
+            <ul>
+                <li>Generate unit test classes and test methods, mock fields, etc</li>
+                <li>Add a test method to an existing test class</li>
+            </ul>
+            </p>
+
+
+            <p>中文：</p>
+            <p>一款帮助日常开发的idea插件</p>
+
+            <p>使用方式为：右键 > Generate > Code Helper</p>
             <p>单元测试相关功能在<a href="https://plugins.jetbrains.com/plugin/18420-jcode5">jcode5</a>基础上开发而来，优化了原插件使用上的一些问题</p>
             <p>功能列表:
             <ul>
-                <li>生成junit单元测试类和测试方法，mock字段等</li>
+                <li>生成单元测试类和测试方法，mock字段等</li>
                 <li>为已有测试类添加测试方法</li>
             </ul>
             </p>
@@ -29,27 +44,21 @@
 
     <change-notes>
     <![CDATA[
-      <p>If you have any comments please let me know.</p>
-
-      <p>Release 1.0.0:
       <ul>
         <li>修改获取当前文件的逻辑：原插件必须光标放在类名上才可以生成，改为了根据当前打开文件生成，增加稳定性</li>
         <li>修改方法和字段选择的逻辑：由删除 - 反选的操作逻辑改为了正选逻辑</li>
         <li>修改默认窗体大小：原插件弹出窗体太小，每次都需要放大使用，修改了弹出窗体的默认大小，可以记忆放大/缩小后的大小（idea重启后失效）</li>
         <li>去掉valueSource，jsonFileSource选择，全部使用@ValueSource</li>
-        <li>增加freemaker依赖</li>
-        <li>部分代码生成逻辑由java硬编码改为freemaker，更易读和维护，也便于拓展（例如后续自定义代码模版）</li>
+        <li>增加freemarker依赖</li>
+        <li>部分代码生成逻辑由java硬编码改为freemarker，更易读和维护，也便于拓展（例如后续自定义代码模版）</li>
         <li>修改生成的代码，删除无用逻辑</li>
         <li>加入BaseTest逻辑：鼠标点击窗体下方的“choose BaseTest”选择BaseTest文件所在地址，可以记忆上次选择的内容（idea重启后失效），如需要去掉BaseTest，右键单击BaseTest的路径即可，BaseTest会影响mock字段逻辑、extends等</li>
         <li>增加对于TestUtils.java的判断，如果已存在就不生成，避免覆盖代码</li>
         <li>优化部分代码：如已经过期的方法，import 数组导致的编译报错等</li>
         <li>去掉了原项目中的lombok依赖，包大小减少1.7M左右</li>
       </ul>
-      </p>
-
     ]]>
     </change-notes>
-
     <!-- Product and plugin compatibility requirements.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>

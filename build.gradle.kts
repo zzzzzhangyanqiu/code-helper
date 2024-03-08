@@ -30,6 +30,7 @@ intellij {
     type.set("IC") // Target IDE Platform
 
     plugins.set(listOf("com.intellij.java"))
+    updateSinceUntilBuild.set(false)
 }
 
 tasks {
@@ -43,8 +44,8 @@ tasks {
     }
 
     patchPluginXml {
-        sinceBuild.set("222")
-        untilBuild.set("232.*")
+        sinceBuild.set("192.*")
+        untilBuild.set("241.*")
     }
 
     signPlugin {

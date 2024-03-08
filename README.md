@@ -1,4 +1,4 @@
-一款帮助日常开发的idea插件
+一款帮助日常开发的idea插件，地址：https://plugins.jetbrains.com/plugin/23922-code-helper/
 
 单元测试相关功能在[jcode5](https://plugins.jetbrains.com/plugin/18420-jcode5)基础上开发而来，优化了原插件使用上的一些问题
 
