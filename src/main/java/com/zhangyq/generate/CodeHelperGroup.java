@@ -1,6 +1,9 @@
 package com.zhangyq.generate;
 
-import com.intellij.openapi.actionSystem.*;
+import com.intellij.openapi.actionSystem.ActionGroup;
+import com.intellij.openapi.actionSystem.AnAction;
+import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.project.Project;
 import com.zhangyq.generate.code.action.test.TestClassGenerateAction;
 import com.zhangyq.generate.code.action.test.TestMethodGenerateAction;
@@ -42,10 +45,5 @@ public class CodeHelperGroup extends ActionGroup {
     public void update(@NotNull AnActionEvent e) {
         super.update(e);
         PluginUtil.update(e);
-    }
-
-    @Override
-    public @NotNull ActionUpdateThread getActionUpdateThread() {
-        return ActionUpdateThread.BGT;
     }
 }

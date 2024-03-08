@@ -1,6 +1,9 @@
 package com.zhangyq.generate.code.action.test;
 
-import com.intellij.openapi.actionSystem.*;
+import com.intellij.openapi.actionSystem.AnAction;
+import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.CommonDataKeys;
+import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.psi.PsiClass;
@@ -84,10 +87,5 @@ public class TestMethodGenerateAction extends AnAction {
     public void update(@NotNull AnActionEvent e) {
         super.update(e);
         PluginUtil.update(e);
-    }
-
-    @Override
-    public @NotNull ActionUpdateThread getActionUpdateThread() {
-        return ActionUpdateThread.BGT;
     }
 }

@@ -1,6 +1,9 @@
 package com.zhangyq.generate.code.action.test;
 
-import com.intellij.openapi.actionSystem.*;
+import com.intellij.openapi.actionSystem.AnAction;
+import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.CommonDataKeys;
+import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.psi.PsiClass;
@@ -8,8 +11,8 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.zhangyq.generate.code.common.ValueContext;
 import com.zhangyq.generate.code.dialog.test.FieldAndMethodConfirmPanel;
-import com.zhangyq.generate.code.generator.file.UnitTestCodeGenerator;
 import com.zhangyq.generate.code.generator.file.FileCreateTask;
+import com.zhangyq.generate.code.generator.file.UnitTestCodeGenerator;
 import com.zhangyq.generate.util.PluginUtil;
 import org.jetbrains.annotations.NotNull;
 
@@ -73,10 +76,5 @@ public class TestClassGenerateAction extends AnAction {
     public void update(@NotNull AnActionEvent e) {
         super.update(e);
         PluginUtil.update(e);
-    }
-
-    @Override
-    public @NotNull ActionUpdateThread getActionUpdateThread() {
-        return ActionUpdateThread.BGT;
     }
 }
