@@ -7,7 +7,7 @@
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
     <name>Code Helper</name>
 
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
     <vendor email="zzzzzhangyanqiu@163.com" url="https://github.com/zzzzzhangyanqiu/">zzzzzhangyanqiu</vendor>
 

@@ -1,12 +1,7 @@
-<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M32.0845 7.94025V4H24.0203V7.9896H16.029V4H7.91553V7.94025H4V36H16.0044V32.0045C16.0058 30.9457 16.4274 29.9308 17.1766 29.1826C17.9258 28.4345 18.9412 28.0143 20 28.0143C21.0588 28.0143 22.0743 28.4345 22.8234 29.1826C23.5726 29.9308 23.9942 30.9457 23.9956 32.0045V36H36V7.94025H32.0845Z"
-          fill="url(#paint0_linear)"/>
-    <defs>
-        <linearGradient id="paint0_linear" x1="2.94192" y1="4.89955" x2="37.7772" y2="39.7345"
-                        gradientUnits="userSpaceOnUse">
-            <stop offset="0.15937" stop-color="#3BEA62"/>
-            <stop offset="0.5404" stop-color="#3C99CC"/>
-            <stop offset="0.93739" stop-color="#6B57FF"/>
-        </linearGradient>
-    </defs>
+<svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" viewBox="0 0 2048 2048">
+	<rect fill-opacity="0.6" x="192" y="192" width="1664" height="1664" rx="384" ry="384" fill="#7cc214"/>
+	<g transform="scale(0.63)">
+		<path fill-opacity="0.7" transform="translate(349.21000000000004, 2334.24) rotate(180) scale(-1, 1)" fill="#231f20" d="M944 53q-84 -41 -169.5 -61.5t-176.5 -20.5q-230 0 -356.5 133t-126.5 373q0 220 70 436t184 353q107 130 236 192t294 62q80 0 159 -21t154 -61l-41 -207q-64 63 -135 94t-151 31q-95 0 -176 -40.5t-152 -123.5q-104 -123 -167.5 -315t-63.5 -385q0 -173 78 -265 t225 -92q85 0 175.5 32t178.5 93z"/>
+		<path fill-opacity="0.7" transform="translate(1582.21, 2334.24) rotate(180) scale(-1, 1)" fill="#231f20" d="M283 1493h202l-118 -612h553l118 612h203l-291 -1493h-202l139 711h-555l-137 -711h-203z"/>
+	</g>
 </svg>
